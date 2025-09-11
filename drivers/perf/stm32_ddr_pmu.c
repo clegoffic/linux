@@ -605,7 +605,7 @@ static int stm32_ddr_pmu_get_memory_type(struct stm32_ddr_pmu *pmu)
 #define STM32_DDR_PMU_EVENT_ATTR(_name, _id)			\
 	PMU_EVENT_ATTR_ID(_name, stm32_ddr_pmu_sysfs_show, _id)
 
-static struct attribute *stm32_ddr_pmu_events_attrs_mp[] = {
+static struct attribute *stm32_ddr_pmu_events_attrs_mp1[] = {
 	STM32_DDR_PMU_EVENT_ATTR(perf_op_is_rd, PERF_OP_IS_RD),
 	STM32_DDR_PMU_EVENT_ATTR(perf_op_is_wr, PERF_OP_IS_WR),
 	STM32_DDR_PMU_EVENT_ATTR(perf_op_is_activate, PERF_OP_IS_ACTIVATE),
@@ -627,9 +627,9 @@ static struct attribute *stm32_ddr_pmu_events_attrs_mp[] = {
 	NULL
 };
 
-static struct attribute_group stm32_ddr_pmu_events_attrs_group_mp = {
+static struct attribute_group stm32_ddr_pmu_events_attrs_group_mp1 = {
 	.name = "events",
-	.attrs = stm32_ddr_pmu_events_attrs_mp,
+	.attrs = stm32_ddr_pmu_events_attrs_mp1,
 };
 
 static struct attribute *stm32_ddr_pmu_events_attrs_mp2[] = {
@@ -697,7 +697,7 @@ static const struct attribute_group stm32_ddr_pmu_format_attr_group = {
 };
 
 static const struct attribute_group *stm32_ddr_pmu_attr_groups_mp1[] = {
-	&stm32_ddr_pmu_events_attrs_group_mp,
+	&stm32_ddr_pmu_events_attrs_group_mp1,
 	&stm32_ddr_pmu_format_attr_group,
 	NULL
 };
