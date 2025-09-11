@@ -514,14 +514,13 @@ static void stm32_ddr_pmu_event_del(struct perf_event *event, int flags)
 {
 	struct stm32_ddr_pmu *pmu = to_stm32_ddr_pmu(event->pmu);
 	struct stm32_ddr_cnt *counter = event->pmu_private;
-	bool events = true;
 
 	stm32_ddr_pmu_event_stop(event, PERF_EF_UPDATE);
 
 	stm32_ddr_pmu_free_counter(pmu, counter);
 
 	for (int i = 0; i < pmu->cfg->counters_nb; i++) {
-		events = !list_empty(&pmu->counters[i]);
+		bool events = !list_empty(&pmu->counters[i]);
 		if (events) /* If there is activity nothing to do */
 			return;
 	}
@@ -870,11 +869,11 @@ static DEFINE_SIMPLE_DEV_PM_OPS(stm32_ddr_pmu_pm_ops, NULL, stm32_ddr_pmu_device
 static const struct of_device_id stm32_ddr_pmu_of_match[] = {
 	{
 		.compatible = "st,stm32mp131-ddr-pmu",
-		.data = &stm32_ddr_pmu_cfg_mp1
+		.data = &stm32_ddr_pmu_cfg_mp1,
 	},
 	{
 		.compatible = "st,stm32mp251-ddr-pmu",
-		.data = &stm32_ddr_pmu_cfg_mp2
+		.data = &stm32_ddr_pmu_cfg_mp2,
 	},
 	{ }
 };
