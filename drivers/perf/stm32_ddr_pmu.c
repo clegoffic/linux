@@ -710,20 +710,22 @@ static const struct attribute_group *stm32_ddr_pmu_attr_groups_mp2[] = {
 
 static int stm32_ddr_pmu_device_probe(struct platform_device *pdev)
 {
+	const struct stm32_ddr_pmu_cfg *cfg;
 	struct stm32_firewall firewall;
 	struct stm32_ddr_pmu *pmu;
 	struct reset_control *rst;
 	struct resource *res;
 	int ret;
 
-	pmu = devm_kzalloc(&pdev->dev, struct_size(pmu, counters, MP2_CNT_NB), GFP_KERNEL);
+	cfg = device_get_match_data(&pdev->dev);
+
+	pmu = devm_kzalloc(&pdev->dev, struct_size(pmu, counters, cfg->counters_nb), GFP_KERNEL);
 	if (!pmu)
 		return -ENOMEM;
 
 	platform_set_drvdata(pdev, pmu);
 	pmu->dev = &pdev->dev;
-
-	pmu->cfg = device_get_match_data(pmu->dev);
+	pmu->cfg = cfg;
 
 	pmu->membase = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
 	if (IS_ERR(pmu->membase))
