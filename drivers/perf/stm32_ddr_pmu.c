@@ -114,10 +114,10 @@ struct stm32_ddr_pmu {
 struct stm32_ddr_pmu_cfg {
 	const struct stm32_ddr_pmu_regspec *regs;
 	const struct attribute_group **attribute;
-	u32 counters_nb;
-	u32 evt_counters_nb;
-	u32 time_cnt_idx;
-	struct stm32_ddr_cnt * (*get_counter)(struct stm32_ddr_pmu *p, struct perf_event *e);
+	const u32 counters_nb;
+	const u32 evt_counters_nb;
+	const u32 time_cnt_idx;
+	struct stm32_ddr_cnt * (*const get_counter)(struct stm32_ddr_pmu *p, struct perf_event *e);
 };
 
 #define STM32_DDR_PMU_EVENT_NUMBER(group, index)	(((group) << 8) | (index))
@@ -711,15 +711,21 @@ static const struct attribute_group *stm32_ddr_pmu_attr_groups_mp2[] = {
 static int stm32_ddr_pmu_device_probe(struct platform_device *pdev)
 {
 	const struct stm32_ddr_pmu_cfg *cfg;
+	struct stm32_ddr_pmu *pmu = NULL;
 	struct stm32_firewall firewall;
-	struct stm32_ddr_pmu *pmu;
 	struct reset_control *rst;
 	struct resource *res;
 	int ret;
 
 	cfg = device_get_match_data(&pdev->dev);
+	if (!cfg)
+		return -EINVAL;
 
-	pmu = devm_kzalloc(&pdev->dev, struct_size(pmu, counters, cfg->counters_nb), GFP_KERNEL);
+	if (cfg->counters_nb)
+		pmu = devm_kzalloc(&pdev->dev,
+				   struct_size(pmu, counters, cfg->counters_nb),
+				   GFP_KERNEL);
+
 	if (!pmu)
 		return -ENOMEM;
 
