@@ -13,13 +13,15 @@ properties:
   compatible:
     oneOf:
       - items:
-          - const: st,stm32mp131-ddr-pmu
+          - enum:
+              - st,stm32mp131-ddr-pmu
       - items:
           - enum:
               - st,stm32mp151-ddr-pmu
           - const: st,stm32mp131-ddr-pmu
       - items:
-          - const: st,stm32mp251-ddr-pmu
+          - enum:
+              - st,stm32mp251-ddr-pmu
 
   reg:
     maxItems: 1
