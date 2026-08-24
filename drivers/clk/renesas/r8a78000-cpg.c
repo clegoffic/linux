@@ -280,8 +280,7 @@ static int r8a78000_cpg_probe(struct platform_device *pdev)
 		goto fallback;
 	}
 
-	if (strcmp(version.vendor_id, "Renesas") ||
-	    strcmp(version.sub_vendor_id, "None")) {
+	if (strcmp(version.vendor_id, "Renesas")) {
 		dev_warn(dev, "Unsupported SCMI firmware %s/%s\n",
 			 version.vendor_id, version.sub_vendor_id);
 		goto fallback;
@@ -343,6 +342,7 @@ static const struct fw_map r8a78000_cpg_fw_map[] = {
 	{ 0x010d0000, r8a78000_cpg_fw_4_31_0 },	/* SCP FW SDKv4.31.0 */
 	{ 0x010e0000, r8a78000_cpg_fw_4_31_0 },	/* SCP FW SDKv4.32.0 */
 	{ 0x01100000, r8a78000_cpg_fw_4_31_0 },	/* SCP FW SDKv4.36.0 */
+	{ 0x02100000, r8a78000_cpg_fw_4_31_0 },	/* Arm SCP-firmware 2.16.0 */
 	{ 0, NULL }
 };
 
