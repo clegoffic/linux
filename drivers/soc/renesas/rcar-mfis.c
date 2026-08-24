@@ -108,9 +108,13 @@ static irqreturn_t mfis_mb_iicr_interrupt(int irq, void *data)
 static int mfis_mb_startup(struct mbox_chan *chan)
 {
 	struct mfis_chan_priv *chan_priv = chan->con_priv;
+	struct mfis_priv *priv = mfis_mb_mbox_to_priv(chan->mbox);
 
 	if (!chan_priv->irq)
 		return 0;
+
+	/* A doorbell left set by a boot stage fires before the client is ready */
+	mfis_write(&priv->mbox_reg, chan_priv->reg, 0);
 
 	return request_irq(chan_priv->irq, mfis_mb_iicr_interrupt, 0,
 			   dev_name(chan->mbox->dev), chan);
