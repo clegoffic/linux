@@ -579,7 +579,16 @@
 };
 
 &rswitch3 {
-	status = "okay";
+	/*
+	 * Kept disabled: the driver's first register access to the switch
+	 * hangs the core forever (the block is off the bus during Linux boot,
+	 * and there is no bus timeout, so a bad access never aborts). Wiring
+	 * and de-asserting the SCMI reset domain was tried and did NOT help, so
+	 * the root cause is not the reset. Re-enable only once the block is
+	 * proven to stay on the bus (suspect the core functional clock, or an
+	 * SCMI clock/power transition during clk/genpd init).
+	 */
+	status = "disabled";
 	pinctrl-0 = <&eth25g2_pins>, <&ethes0_pins>;
 	pinctrl-names = "default";
 
